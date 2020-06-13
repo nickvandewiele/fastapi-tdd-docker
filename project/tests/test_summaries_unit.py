@@ -15,6 +15,11 @@ def test_create_summary(test_app, monkeypatch):
 
     monkeypatch.setattr(crud, "post", mock_post)
 
+    def mock_generate_summary(summary_id, url):
+        return None
+
+    monkeypatch.setattr(summaries, "generate_summary", mock_generate_summary)
+
     response = test_app.post("/summaries/", data=json.dumps(test_request_payload),)
 
     assert response.status_code == 201
@@ -81,7 +86,7 @@ def test_read_all_summaries(test_app, monkeypatch):
             "url": "https://testdrivenn.io",
             "summary": "summary",
             "created_at": datetime.utcnow().isoformat(),
-        }
+        },
     ]
 
     async def mock_get_all():
@@ -198,7 +203,9 @@ def test_update_summary(test_app, monkeypatch):
         ],
     ],
 )
-def test_update_summary_invalid(test_app, monkeypatch, summary_id, payload, status_code, detail):
+def test_update_summary_invalid(
+    test_app, monkeypatch, summary_id, payload, status_code, detail
+):
     async def mock_put(id, payload):
         return None
 
@@ -211,7 +218,7 @@ def test_update_summary_invalid(test_app, monkeypatch, summary_id, payload, stat
 
 def test_update_summary_invalid_url(test_app):
     response = test_app.put(
-        f"/summaries/1/",
+        "/summaries/1/",
         data=json.dumps({"url": "invalid://url", "summary": "updated!"}),
     )
     assert response.status_code == 422
