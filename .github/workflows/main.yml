@@ -76,7 +76,7 @@ jobs:
             -e ENVIRONMENT=dev \
             -e DATABASE_TEST_URL=sqlite://sqlite.db \
             -p 5003:8765 \
-            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}-final:latest
       - name: Install requirements
         run: docker exec fastapi-tdd pip install black flake8 isort pytest
       - name: Pytest
