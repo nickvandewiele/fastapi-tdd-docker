@@ -87,7 +87,7 @@ jobs:
         run: docker exec fastapi-tdd python -m black . --check
       - name: isort
         run: docker exec fastapi-tdd /bin/sh -c "python -m isort ./*/*.py --check-only"
-  
+
   deploy:
     name: Deploy to Heroku
     runs-on: ubuntu-latest
@@ -125,7 +125,7 @@ jobs:
         env:
           HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
       - name: Push to the registry
-        run: docker push ${{ env.HEROKU_REGISTRY_IMAGE }}
+        run: docker push ${{ env.HEROKU_REGISTRY_IMAGE }}:latest
       - name: Set environment variables
         run: |
           echo ::set-env name=HEROKU_REGISTRY_IMAGE::${{ env.HEROKU_REGISTRY_IMAGE }}
